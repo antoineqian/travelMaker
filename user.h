@@ -16,9 +16,9 @@ public:
 
     void setPassword(const string &password) { this->password = password; }
 
-    string getUsername() { return username; }
+    string getUsername() const { return username; }
 
-    string getPassword() { return password; }
+    string getPassword() const { return password; }
 
 private:
     string username;
@@ -38,7 +38,7 @@ public:
         currentUser = nullptr;
     }
 
-    User *getCurrentUser() { return currentUser; }
+    const User *getCurrentUser() const { return currentUser; }
 
     void getAccess()
     {
