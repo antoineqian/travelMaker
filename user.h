@@ -1,3 +1,6 @@
+#ifndef USER_H_
+#define USER_H_
+
 #include <string>
 #include <iostream>
 #include <map>
@@ -22,20 +25,45 @@ private:
     string password;
 };
 
-class Admin : public User
-{
-};
-
-class Customer : public User
-{
-};
-
-class UserManager
+class Session
 {
 public:
+    ~Session()
+    {
+        for (auto pair : userDB)
+        {
+            delete pair.second;
+        }
+        userDB.clear();
+        currentUser = nullptr;
+    }
+
+    User *getCurrentUser() { return currentUser; }
+
+    void getAccess()
+    {
+        cout << "Menu \n";
+        cout << "\t1: Login\n\t2: Signup\n";
+        cout << "Enter number in range 1-2: ";
+        int choice;
+        cin >> choice;
+
+        if (choice == 1)
+        {
+            login();
+        }
+        else if (choice == 2)
+        {
+            signUp();
+        }
+        cout << "Welcome " << currentUser->getUsername() << '\n';
+    }
+
+private:
+    User *currentUser = nullptr;
     void login()
     {
-        LoadDatabase();
+        loadDatabase();
         while (true)
         {
             // TODO: Dry up
@@ -53,15 +81,17 @@ public:
                 cout << "Password does not match\n";
                 continue;
             }
+            currentUser = user;
+            break;
         }
     };
 
     void signUp()
     {
-        LoadDatabase();
+        loadDatabase();
         while (true)
         {
-            cout << "Please enter your username and password";
+            cout << "Please enter your username and password: \n";
             string username, password;
             cin >> username >> password;
 
@@ -72,24 +102,19 @@ public:
             }
             else
             {
-                Customer *newUser = new Customer();
+                User *newUser = new User();
                 newUser->setUsername(username);
                 newUser->setPassword(password);
+                currentUser = newUser;
                 break;
             }
         }
     };
 
-    void LoadDatabase()
+    void loadDatabase()
     {
-        cout << "UsersManager: LoadDatabase\n";
-
-        Admin *admin = new Admin();
-        admin->setUsername("hsian");
-        admin->setPassword("5321");
-        userDB[admin->getUsername()] = admin;
-
-        Customer *customer = new Customer();
+        // cout << "Session: loadDatabase\n";
+        User *customer = new User();
         customer->setUsername("antoineqian");
         customer->setPassword("222");
         userDB[customer->getUsername()] = customer;
@@ -98,3 +123,5 @@ public:
     // Map of users for fast CRUD
     map<string, User *> userDB;
 };
+
+#endif /** USER_H_ **/
