@@ -50,8 +50,19 @@ public:
     void makeItinerary()
     {
     }
+
     void listItineraries()
     {
+        auto itineraries = this->user.lock()->getItineraries();
+        if (itineraries.size() == 0)
+        {
+            cout << "You have not made any itineraries !\n";
+        }
+        for (auto iti : itineraries)
+        {
+            iti.toString();
+            cout << '\n';
+        }
     }
 };
 

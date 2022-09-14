@@ -5,12 +5,15 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <vector>
+#include "reservation.h"
 using std::cin;
 using std::cout;
 using std::make_shared;
 using std::map;
 using std::shared_ptr;
 using std::string;
+using std::vector;
 class User
 {
 public:
@@ -26,7 +29,10 @@ public:
 
     string getPassword() const { return password; }
 
+    const vector<Itinerary> getItineraries() { return itineraries; };
+
 private:
+    vector<Itinerary> itineraries;
     string username;
     string password;
 };
