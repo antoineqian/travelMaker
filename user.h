@@ -4,17 +4,23 @@
 #include <string>
 #include <iostream>
 #include <map>
+#include <memory>
 using std::cin;
 using std::cout;
+using std::make_shared;
 using std::map;
+using std::shared_ptr;
 using std::string;
-
 class User
 {
 public:
-    void setUsername(const string &username) { this->username = username; }
-
-    void setPassword(const string &password) { this->password = password; }
+    User(const User &) = delete;
+    void operator=(const User &) = delete;
+    User(const string &username, const string &password)
+    {
+        this->username = username;
+        this->password = password;
+    };
 
     string getUsername() const { return username; }
 
@@ -30,15 +36,11 @@ class Session
 public:
     ~Session()
     {
-        for (auto pair : userDB)
-        {
-            delete pair.second;
-        }
         userDB.clear();
         currentUser = nullptr;
     }
 
-    const User *getCurrentUser() const { return currentUser; }
+    shared_ptr<User> getCurrentUser() { return currentUser; }
 
     void getAccess()
     {
@@ -60,28 +62,27 @@ public:
     }
 
 private:
-    User *currentUser = nullptr;
+    shared_ptr<User> currentUser = nullptr;
     void login()
     {
         loadDatabase();
         while (true)
         {
-            // TODO: Dry up
             cout << "Please enter your username and password: \n";
             string username, password;
             cin >> username >> password;
-            if (!userDB.count(username))
+            if (!userDB.contains(username))
             {
                 cout << "User does not exist\n";
                 continue;
             }
-            User *user = userDB.find(username)->second;
+            shared_ptr<User> user = userDB.find(username)->second;
             if (user->getPassword() != password)
             {
                 cout << "Password does not match\n";
                 continue;
             }
-            currentUser = user;
+            currentUser = make_shared<User>(username, password);
             break;
         }
     };
@@ -95,17 +96,14 @@ private:
             string username, password;
             cin >> username >> password;
 
-            if (userDB.count(username))
+            if (userDB.contains(username))
             {
                 cout << "User already exists. Please try again\n";
                 continue;
             }
             else
             {
-                User *newUser = new User();
-                newUser->setUsername(username);
-                newUser->setPassword(password);
-                currentUser = newUser;
+                currentUser = make_shared<User>(username, password);
                 break;
             }
         }
@@ -113,15 +111,13 @@ private:
 
     void loadDatabase()
     {
-        // cout << "Session: loadDatabase\n";
-        User *customer = new User();
-        customer->setUsername("antoineqian");
-        customer->setPassword("222");
+        // Dummy data is used for the database;
+        shared_ptr<User> customer = make_shared<User>("antoineqian", "222");
         userDB[customer->getUsername()] = customer;
     }
 
     // Map of users for fast CRUD
-    map<string, User *> userDB;
+    map<string, shared_ptr<User>> userDB;
 };
 
 #endif /** USER_H_ **/
