@@ -7,6 +7,7 @@
 #include <memory>
 #include <vector>
 #include "reservation.h"
+#include "utils.h"
 using std::cin;
 using std::cout;
 using std::make_shared;
@@ -50,20 +51,13 @@ public:
 
     void getAccess()
     {
-        cout << "Menu \n";
-        cout << "\t1: Login\n\t2: Signup\n";
-        cout << "Enter number in range 1-2: ";
-        int choice;
-        cin >> choice;
+        int choice = getChoiceFromMenu(vector<string>{"Login", "SignUp"}, "Access menu");
 
         if (choice == 1)
-        {
             login();
-        }
         else if (choice == 2)
-        {
             signUp();
-        }
+
         cout << "Welcome " << currentUser->getUsername() << '\n';
     }
 

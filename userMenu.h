@@ -1,7 +1,9 @@
 #ifndef USER_MENU_H_
 #define USER_MENU_H_
 #include <memory>
+#include <vector>
 #include "user.h"
+#include "utils.h"
 using std::shared_ptr;
 using std::weak_ptr;
 class UserMenu
@@ -19,26 +21,20 @@ public:
     {
         while (true)
         {
-            cout << "User menu \n";
-            cout << "\t1: User profile\n\t2: Make itinerary\n\t3: List my itineraries\n\t4: Logout\n";
-            int choice;
-            cin >> choice;
+            int choice = getChoiceFromMenu(vector<string>{
+                                               "User profile",
+                                               "Make itinerary",
+                                               "List my itineraries",
+                                               "Log Out"},
+                                           "User Menu");
             if (choice == 1)
-            {
                 showUserProfile();
-            }
             else if (choice == 2)
-            {
                 makeItinerary();
-            }
             else if (choice == 3)
-            {
                 listItineraries();
-            }
             else if (choice == 4)
-            {
                 break;
-            }
         }
     }
 
