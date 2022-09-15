@@ -32,6 +32,11 @@ public:
         reservations.push_back(reservation);
     }
 
+    void clear()
+    {
+        reservations.clear();
+    }
+
     virtual double totalCost() const override
     {
         double cost = 0;
@@ -49,7 +54,6 @@ public:
 
     virtual string toString() const override
     {
-        // TODO: Not tested
         ostringstream oss;
 
         oss << "Your itinerary consists of " << reservations.size() << " reservations\n";

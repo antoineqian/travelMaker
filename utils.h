@@ -10,17 +10,15 @@ using std::vector;
 
 int getIntFromUser(int low, int high)
 {
-    while (true)
-    {
-        cout << "\nEnter number in range " << low << " - " << high << ": ";
+    cout << "\nEnter number in range " << low << " - " << high << ": ";
 
-        int choice;
-        cin >> choice;
-        if (low <= choice && choice <= high)
-            return choice;
+    int choice;
+    cin >> choice;
+    if (low <= choice && choice <= high)
+        return choice;
 
-        cout << "ERROR: invalid number...Try again\n";
-    }
+    cout << "ERROR: invalid number...Try again\n";
+    return getIntFromUser(low, high);
 }
 
 int getChoiceFromMenu(const vector<string> &choices, string title)

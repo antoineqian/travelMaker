@@ -32,6 +32,11 @@ public:
 
     const vector<Itinerary> getItineraries() { return itineraries; };
 
+    void addItinerary(const Itinerary &itinerary)
+    {
+        itineraries.push_back(itinerary);
+    }
+
 private:
     vector<Itinerary> itineraries;
     string username;
