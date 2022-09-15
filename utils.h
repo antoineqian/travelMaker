@@ -3,8 +3,11 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <limits>
 using std::cin;
 using std::cout;
+using std::numeric_limits;
+using std::streamsize;
 using std::string;
 using std::vector;
 
@@ -13,12 +16,23 @@ int getIntFromUser(int low, int high)
     cout << "\nEnter number in range " << low << " - " << high << ": ";
 
     int choice;
-    cin >> choice;
-    if (low <= choice && choice <= high)
-        return choice;
-
-    cout << "ERROR: invalid number...Try again\n";
-    return getIntFromUser(low, high);
+    if (cin >> choice)
+    {
+        if (low <= choice && choice <= high)
+            return choice;
+        else
+        {
+            cout << "ERROR: number outside of range...Try again\n";
+            return getIntFromUser(low, high);
+        }
+    }
+    else
+    {
+        cout << "ERROR: invalid input...Try again\n";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return getIntFromUser(low, high);
+    }
 }
 
 int getChoiceFromMenu(const vector<string> &choices, string title)
