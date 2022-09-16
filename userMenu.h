@@ -6,6 +6,7 @@
 #include "hotel.h"
 #include "user.h"
 #include "utils.h"
+#include "backend.h"
 using std::shared_ptr;
 using std::weak_ptr;
 class UserMenu
@@ -94,16 +95,11 @@ public:
     void addFlight()
     {
         FlightRequest req = readFlightRequest();
-        vector<Flight> flights;
+        auto flights = Backend::findFlights(req);
         vector<string> flightsInfo;
-        for (auto m : AirlineManagerFactory::getManagers())
+        for (auto f : flights)
         {
-            auto airlineFlights = m->queryFlights(req);
-            for (auto f : airlineFlights)
-            {
-                flightsInfo.push_back(f.toString());
-            }
-            flights.insert(flights.end(), airlineFlights.begin(), airlineFlights.end());
+            flightsInfo.push_back(f.toString());
         }
         int flightChoice = getChoiceFromMenu(flightsInfo, "Available Flights");
 
@@ -141,16 +137,11 @@ public:
     void addHotel()
     {
         HotelRequest req = readHotelRequest();
-        vector<HotelRoom> rooms;
+        vector<HotelRoom> rooms = Backend::findRooms(req);
         vector<string> hotelsInfo;
-        for (auto m : HotelManagerFactory::getManagers())
+        for (auto r : rooms)
         {
-            auto managerRooms = m->searchRooms(req);
-            for (auto r : managerRooms)
-            {
-                hotelsInfo.push_back(r.toString());
-            }
-            rooms.insert(rooms.end(), managerRooms.begin(), managerRooms.end());
+            hotelsInfo.push_back(r.toString());
         }
         int roomChoice = getChoiceFromMenu(hotelsInfo, "Available Rooms");
 
@@ -183,23 +174,7 @@ public:
 
     void confirmItinerary()
     {
-        for (auto r : itinerary.getReservations())
-        {
-            shared_ptr<FlightReservation> flightRes;
-
-            if ((flightRes = dynamic_pointer_cast<FlightReservation>(r)))
-            {
-                const string &name = flightRes->getFlight().getAirlineName();
-                AirlineManagerFactory::getManager(name)->bookFlight(flightRes->getFlight());
-            }
-            shared_ptr<HotelReservation> hotelRes;
-
-            if ((hotelRes = dynamic_pointer_cast<HotelReservation>(r)))
-            {
-                const string &name = hotelRes->getRoom().getHotelName();
-                HotelManagerFactory::getManager(name)->bookRoom(*hotelRes);
-            }
-        }
+        Backend::confirmItinerary(itinerary);
         this->user.lock()->addItinerary(itinerary);
         itinerary.clear();
     }

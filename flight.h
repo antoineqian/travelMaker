@@ -1,3 +1,5 @@
+#ifndef FLIGHT_H_
+#define FLIGHT_H_
 #include <string>
 #include <vector>
 #include <iostream>
@@ -232,3 +234,5 @@ public:
         return nullptr;
     }
 };
+
+#endif /** FLIGHT_H_ **/
