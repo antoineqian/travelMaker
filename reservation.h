@@ -59,9 +59,9 @@ public:
         oss << "Your itinerary consists of " << reservations.size() << " reservations\n";
 
         for (const shared_ptr<Reservation> reservation : reservations)
-            oss << reservation->toString() << "\n";
+            oss << reservation->toString() << '\n';
 
-        oss << "The total cost is " << totalCost() << "\n";
+        oss << "The total cost is " << totalCost() << '\n';
         return oss.str();
     }
 };

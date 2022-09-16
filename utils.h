@@ -40,7 +40,7 @@ int getChoiceFromMenu(const vector<string> &choices, string title)
     cout << title << ":\n";
     for (int ch = 0; ch < (int)choices.size(); ++ch)
     {
-        cout << "\t" << ch + 1 << ": " << choices[ch] << "\n";
+        cout << "\t" << ch + 1 << ": " << choices[ch] << '\n';
     }
     return getIntFromUser(1, choices.size());
 }

@@ -127,8 +127,8 @@ public:
     virtual string toString() const override
     {
         ostringstream oss;
-        oss << "Airline reservation with " << flight.getAirlineName() << ": From " << request.getFrom() << " on " << request.getDateFrom() << "\n";
-        oss << "to " << request.getTo() << " on " << request.getDateTo() << "\n";
+        oss << "Airline reservation with " << flight.getAirlineName() << ": From " << request.getFrom() << " on " << request.getDateFrom() << '\n';
+        oss << "to " << request.getTo() << " on " << request.getDateTo() << '\n';
         oss << "\tSeats: " << request.getSeats() << '\n';
         oss << "\tTotal Cost:" << totalCost() << '\n';
 

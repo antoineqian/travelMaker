@@ -3,6 +3,7 @@
 #include <memory>
 #include <vector>
 #include "flight.h"
+#include "hotel.h"
 #include "user.h"
 #include "utils.h"
 using std::shared_ptr;
@@ -59,6 +60,7 @@ public:
                 addFlight();
             else if (choice == 2)
             {
+                addHotel();
             }
             else if (choice == 3)
             {
@@ -91,7 +93,7 @@ public:
 
     void addFlight()
     {
-        FlightRequest req = readRequestFromUser();
+        FlightRequest req = readFlightRequest();
         vector<Flight> flights;
         vector<string> flightsInfo;
         for (auto m : AirlineManagerFactory::getManagers())
@@ -111,7 +113,7 @@ public:
         itinerary.add(reservation);
     }
 
-    const FlightRequest readRequestFromUser()
+    const FlightRequest readFlightRequest()
     {
         string from;
         cout << "Enter departure location: ";
@@ -136,6 +138,49 @@ public:
         return FlightRequest(fromDate, from, toDate, to, seats);
     }
 
+    void addHotel()
+    {
+        HotelRequest req = readHotelRequest();
+        vector<HotelRoom> rooms;
+        vector<string> hotelsInfo;
+        for (auto m : HotelManagerFactory::getManagers())
+        {
+            auto managerRooms = m->searchRooms(req);
+            for (auto r : managerRooms)
+            {
+                hotelsInfo.push_back(r.toString());
+            }
+            rooms.insert(rooms.end(), managerRooms.begin(), managerRooms.end());
+        }
+        int roomChoice = getChoiceFromMenu(hotelsInfo, "Available Rooms");
+
+        HotelRoom chosenRoom = rooms[roomChoice - 1];
+
+        auto reservation = make_shared<HotelReservation>(req, chosenRoom);
+        itinerary.add(reservation);
+    }
+
+    const HotelRequest readHotelRequest()
+    {
+        string city;
+        cout << "Enter city: ";
+        cin >> city;
+
+        string fromDate;
+        cout << "Enter start of stay: ";
+        cin >> fromDate;
+
+        string toDate;
+        cout << "Enter end of stay: ";
+        cin >> toDate;
+
+        int guests;
+        cout << "Enter number of guests: ";
+        cin >> guests;
+
+        return HotelRequest(fromDate, toDate, city, guests);
+    }
+
     void confirmItinerary()
     {
         for (auto r : itinerary.getReservations())
@@ -146,6 +191,13 @@ public:
             {
                 const string &name = flightRes->getFlight().getAirlineName();
                 AirlineManagerFactory::getManager(name)->bookFlight(flightRes->getFlight());
+            }
+            shared_ptr<HotelReservation> hotelRes;
+
+            if ((hotelRes = dynamic_pointer_cast<HotelReservation>(r)))
+            {
+                const string &name = hotelRes->getRoom().getHotelName();
+                HotelManagerFactory::getManager(name)->bookRoom(*hotelRes);
             }
         }
         this->user.lock()->addItinerary(itinerary);
