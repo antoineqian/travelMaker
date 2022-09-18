@@ -20,7 +20,7 @@ class User
 public:
     User(const User &) = delete;
     void operator=(const User &) = delete;
-    User(const string &username, const string &password)
+    explicit User(const string &username, const string &password)
     {
         this->username = username;
         this->password = password;

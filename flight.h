@@ -84,7 +84,7 @@ private:
     string dateTo;
 
 public:
-    Flight(const string &airlineName, double cost, string &dateFrom, string &dateTo, string &from, string &to) : airlineName(airlineName), cost(cost), dateFrom(dateFrom), dateTo(dateTo), from(from), to(to){};
+    explicit Flight(const string &airlineName, double cost, string &dateFrom, string &dateTo, string &from, string &to) : airlineName(airlineName), cost(cost), dateFrom(dateFrom), dateTo(dateTo), from(from), to(to){};
     string toString() const
     {
         ostringstream oss;
@@ -104,7 +104,7 @@ private:
     int seats;
 
 public:
-    FlightRequest(string dateFrom, string from, string dateTo, string to, int seats) : dateFrom(dateFrom), from(from), dateTo(dateTo), to(to), seats(seats){};
+    explicit FlightRequest(string dateFrom, string from, string dateTo, string to, int seats) : dateFrom(dateFrom), from(from), dateTo(dateTo), to(to), seats(seats){};
 
     const string &getDateFrom() const { return dateFrom; }
 
@@ -122,7 +122,7 @@ public:
 class FlightReservation : public Reservation
 {
 public:
-    FlightReservation(FlightRequest req, Flight flight) : request(req), flight(flight){};
+    explicit FlightReservation(FlightRequest req, Flight flight) : request(req), flight(flight){};
 
     virtual double totalCost() const override { return flight.getCost(); }
 

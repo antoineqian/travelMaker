@@ -58,7 +58,7 @@ private:
     double pricePerNight;
 
 public:
-    HotelRoom(string name, double price) : hotelName(name), pricePerNight(price){};
+    explicit HotelRoom(string name, double price) : hotelName(name), pricePerNight(price){};
     string toString() const
     {
         ostringstream oss;
@@ -81,7 +81,7 @@ private:
     int guests;
 
 public:
-    HotelRequest(string &fromDate, string &toDate, string &city, int guests) : fromDate(fromDate), toDate(toDate), city(city), guests(guests){};
+    explicit HotelRequest(string &fromDate, string &toDate, string &city, int guests) : fromDate(fromDate), toDate(toDate), city(city), guests(guests){};
 
     int getTotalNights() const
     {
@@ -105,7 +105,7 @@ private:
     HotelRoom room;
 
 public:
-    HotelReservation(const HotelRequest &request, const HotelRoom &room) : request(request), room(room)
+    explicit HotelReservation(const HotelRequest &request, const HotelRoom &room) : request(request), room(room)
     {
     }
 
@@ -178,7 +178,6 @@ public:
 
     virtual vector<HotelRoom> searchRooms(HotelRequest req) override
     {
-        // string from_date, string to_date, string country, string city, int needed_rooms, int adults, int children
         vector<CosmoSantsApartment> results = CosmoSantsAPI::findApartments(req.getGuests());
         vector<HotelRoom> rooms;
 
