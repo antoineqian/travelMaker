@@ -1,12 +1,6 @@
 #ifndef FLIGHT_H_
 #define FLIGHT_H_
-#include <string>
-#include <vector>
-#include <iostream>
 #include "reservation.h"
-using std::ostringstream;
-using std::string;
-using std::vector;
 
 class AirJapanFlight
 {

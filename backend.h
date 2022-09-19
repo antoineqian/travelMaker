@@ -3,7 +3,6 @@
 #include <vector>
 #include "hotel.h"
 #include "flight.h"
-using std::vector;
 
 class Backend
 {

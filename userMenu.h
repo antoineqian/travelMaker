@@ -7,7 +7,6 @@
 #include "user.h"
 #include "utils.h"
 #include "backend.h"
-using std::shared_ptr;
 using std::weak_ptr;
 class UserMenu
 {

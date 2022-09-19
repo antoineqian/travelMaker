@@ -1,20 +1,13 @@
 #ifndef USER_H_
 #define USER_H_
 
-#include <string>
-#include <iostream>
 #include <map>
 #include <memory>
-#include <vector>
 #include "reservation.h"
 #include "utils.h"
-using std::cin;
-using std::cout;
 using std::make_shared;
 using std::map;
 using std::shared_ptr;
-using std::string;
-using std::vector;
 class User
 {
 public:

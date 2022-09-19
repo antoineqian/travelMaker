@@ -1,12 +1,6 @@
 #ifndef HOTEL_H_
 #define HOTEL_H_
-
-#include <vector>
-#include <string>
 #include "reservation.h"
-using std::ostringstream;
-using std::string;
-using std::vector;
 
 class NaebaPrinceRoom
 {
