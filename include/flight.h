@@ -7,72 +7,57 @@
 class Flight
 {
 private:
-    string airlineName;
     double cost;
-    string from;
-    string to;
-    string dateFrom;
-    string dateTo;
+    string airlineName, from, to, dateFrom, dateTo;
 
 public:
-    explicit Flight(const string &airlineName, double cost, string &dateFrom, string &dateTo, string &from, string &to) : airlineName(airlineName), cost(cost), dateFrom(dateFrom), dateTo(dateTo), from(from), to(to){};
-    string toString() const
-    {
-        ostringstream oss;
-        oss << "Airline: " << airlineName << " Cost: " << cost << " Departure Date " << dateFrom << " Arrival date " << dateTo;
-        return oss.str();
-    }
-    double getCost() const { return cost; }
-    const string &getAirlineName() const { return airlineName; }
+    explicit Flight(const string &airlineName, double cost, string &dateFrom, string &dateTo, string &from, string &to);
+
+    string toString() const;
+
+    double getCost() const;
+
+    const string &getAirlineName() const;
 };
+
 class FlightRequest
 {
 private:
-    string dateFrom;
-    string from;
-    string dateTo;
-    string to;
+    string dateFrom, from, dateTo, to;
     int seats;
 
 public:
-    explicit FlightRequest(string dateFrom, string from, string dateTo, string to, int seats) : dateFrom(dateFrom), from(from), dateTo(dateTo), to(to), seats(seats){};
+    explicit FlightRequest(string dateFrom, string from, string dateTo, string to, int seats);
 
-    const string &getDateFrom() const { return dateFrom; }
+    const string &getDateFrom() const;
 
-    const string &getDateTo() const { return dateTo; }
+    const string &getDateTo() const;
 
-    int getSeats() const { return seats; }
+    int getSeats() const;
 
-    void setSeats(int seats) { this->seats = seats; }
+    void setSeats(int seats);
 
-    const string &getFrom() const { return from; }
+    const string &getFrom() const;
 
-    const string &getTo() const { return to; }
+    const string &getTo() const;
 };
 
 class FlightReservation : public Reservation
 {
-public:
-    explicit FlightReservation(FlightRequest req, Flight flight) : request(req), flight(flight){};
-
-    virtual double totalCost() const override { return flight.getCost(); }
-
-    virtual string toString() const override
-    {
-        ostringstream oss;
-        oss << "Airline reservation with " << flight.getAirlineName() << ": From " << request.getFrom() << " on " << request.getDateFrom() << '\n';
-        oss << "to " << request.getTo() << " on " << request.getDateTo() << '\n';
-        oss << "\tSeats: " << request.getSeats() << '\n';
-        oss << "\tTotal Cost: " << totalCost() << '\n';
-
-        return oss.str();
-    }
-    const FlightRequest &getRequest() const { return request; }
-    const Flight &getFlight() const { return flight; }
-
 private:
     FlightRequest request;
     Flight flight;
+
+public:
+    explicit FlightReservation(FlightRequest req, Flight flight);
+
+    virtual double totalCost() const override;
+
+    virtual string toString() const override;
+
+    const FlightRequest &getRequest() const;
+
+    const Flight &getFlight() const;
 };
 
 class IAirlineManager
@@ -85,63 +70,20 @@ public:
 
 class AirJapanManager : public IAirlineManager
 {
-    virtual string getName() const override { return "Air Japan"; }
+    virtual string getName() const override;
 
-    virtual vector<Flight> queryFlights(const FlightRequest &req) const override
-    {
-        vector<AirJapanFlight> airJapanflights = AirJapanAPI::fetchFlights(
-            req.getFrom(),
-            req.getDateFrom(),
-            req.getTo(),
-            req.getDateTo(),
-            req.getSeats());
+    virtual vector<Flight> queryFlights(const FlightRequest &req) const override;
 
-        vector<Flight> flights;
-
-        for (auto &japanFlight : airJapanflights)
-        {
-            Flight flight = Flight(getName(), japanFlight.cost, japanFlight.date_from, japanFlight.date_to, japanFlight.departure_location, japanFlight.arrival_location);
-            flights.push_back(flight);
-        }
-        return flights;
-    }
-
-    virtual void bookFlight(Flight flight) const override
-    {
-        // Dummy call to API instead of using flight info`
-        // Always succeed
-        AirJapanAPI::reserveFlight(AirJapanFlight());
-    }
+    virtual void bookFlight(Flight flight) const override;
 };
 
 class AirFranceManager : public IAirlineManager
 {
-    virtual string getName() const override { return "Air France"; }
+    virtual string getName() const override;
 
-    virtual vector<Flight> queryFlights(const FlightRequest &req) const override
-    {
-        vector<AirFranceFlight> airFranceflights = AirFranceAPI::getAvailableFlights(
-            req.getSeats(),
-            req.getFrom(),
-            req.getDateFrom(),
-            req.getTo(),
-            req.getDateTo());
+    virtual vector<Flight> queryFlights(const FlightRequest &req) const override;
 
-        vector<Flight> flights;
-
-        for (auto &afFlight : airFranceflights)
-        {
-            Flight flight = Flight(getName(), afFlight.price, afFlight.fromDate, afFlight.toDate, afFlight.from, afFlight.to);
-            flights.push_back(flight);
-        }
-        return flights;
-    }
-    virtual void bookFlight(Flight flight) const override
-    {
-        // Dummy call to API instead of using flight info
-        // Always succeeed
-        AirFranceAPI::bookFlight(AirFranceFlight());
-    }
+    virtual void bookFlight(Flight flight) const override;
 };
 
 /*
@@ -150,20 +92,9 @@ class AirFranceManager : public IAirlineManager
 class AirlineManagerFactory
 {
 public:
-    static vector<IAirlineManager *> getManagers()
-    {
-        return vector<IAirlineManager *>{new AirFranceManager(), new AirJapanManager()};
-    }
+    static vector<IAirlineManager *> getManagers();
 
-    static IAirlineManager *getManager(const string &name)
-    {
-        for (IAirlineManager *m : AirlineManagerFactory::getManagers())
-        {
-            if (m->getName() == name)
-                return m;
-        }
-        return nullptr;
-    }
+    static IAirlineManager *getManager(const string &name);
 };
 
 #endif /** FLIGHT_H_ **/

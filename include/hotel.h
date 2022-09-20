@@ -11,44 +11,32 @@ private:
     double pricePerNight;
 
 public:
-    explicit HotelRoom(string name, double price) : hotelName(name), pricePerNight(price){};
-    string toString() const
-    {
-        ostringstream oss;
-        oss << "Hotel: " << hotelName << '\n';
-        oss << "Price per night: " << pricePerNight;
-        return oss.str();
-    }
+    explicit HotelRoom(string name, double price);
+    string toString() const;
 
-    double getPricePerNight() const { return pricePerNight; }
+    double getPricePerNight() const;
 
-    const string &getHotelName() const { return hotelName; }
+    const string &getHotelName() const;
 };
 
 class HotelRequest
 {
 private:
-    string fromDate;
-    string toDate;
-    string city;
+    string fromDate, toDate, city;
     int guests;
 
 public:
-    explicit HotelRequest(string &fromDate, string &toDate, string &city, int guests) : fromDate(fromDate), toDate(toDate), city(city), guests(guests){};
+    explicit HotelRequest(string &fromDate, string &toDate, string &city, int guests);
 
-    int getTotalNights() const
-    {
-        // Dummy
-        return 3;
-    }
+    int getTotalNights() const;
 
-    int getGuests() const { return guests; }
+    int getGuests() const;
 
-    const string &getCity() const { return city; }
+    const string &getCity() const;
 
-    const string &getFromDate() const { return fromDate; }
+    const string &getFromDate() const;
 
-    const string &getToDate() const { return toDate; }
+    const string &getToDate() const;
 };
 
 class HotelReservation : public Reservation
@@ -58,30 +46,15 @@ private:
     HotelRoom room;
 
 public:
-    explicit HotelReservation(const HotelRequest &request, const HotelRoom &room) : request(request), room(room)
-    {
-    }
+    explicit HotelReservation(const HotelRequest &request, const HotelRoom &room);
 
-    virtual double totalCost() const override
-    {
-        return room.getPricePerNight() * request.getTotalNights();
-    }
+    virtual double totalCost() const override;
 
-    virtual string toString() const override
-    {
-        ostringstream oss;
-        oss << "Hotel reservation: " << room.getHotelName() << ": " << request.getCity() << '\n';
-        oss << "\t" << request.getFromDate() << " to " << request.getToDate() << " : " << request.getTotalNights() << '\n';
-        oss << "\t"
-            << "For " << request.getGuests() << " people. \n";
-        oss << "\tTotal Cost: " << totalCost() << '\n';
+    virtual string toString() const override;
 
-        return oss.str();
-    }
+    const HotelRequest &getRequest() const;
 
-    const HotelRequest &getRequest() const { return request; }
-
-    const HotelRoom &getRoom() const { return room; }
+    const HotelRoom &getRoom() const;
 };
 
 class IHotelManager
@@ -97,73 +70,29 @@ public:
 class NaebaPrinceManager : public IHotelManager
 {
 public:
-    virtual string getName() const override
-    {
-        return "Naeba Prince";
-    }
+    virtual string getName() const override;
 
-    virtual vector<HotelRoom> searchRooms(HotelRequest req) override
-    {
-        vector<NaebaPrinceRoom> results = NaebaPrinceAPI::getAvailableRooms(req.getGuests());
-        vector<HotelRoom> rooms;
+    virtual vector<HotelRoom> searchRooms(HotelRequest req) override;
 
-        for (auto &result : results)
-        {
-            HotelRoom room(getName(), result.pricePerNight);
-            rooms.push_back(room);
-        }
-        return rooms;
-    }
-
-    virtual bool bookRoom(const HotelReservation &reservation) const override
-    {
-        return true;
-    }
+    virtual bool bookRoom(const HotelReservation &reservation) const override;
 };
 
 class CosmoSantsManager : public IHotelManager
 {
 public:
-    virtual string getName() const override
-    {
-        return "Cosmo Sants";
-    }
+    virtual string getName() const override;
 
-    virtual vector<HotelRoom> searchRooms(HotelRequest req) override
-    {
-        vector<CosmoSantsApartment> results = CosmoSantsAPI::findApartments(req.getGuests());
-        vector<HotelRoom> rooms;
+    virtual vector<HotelRoom> searchRooms(HotelRequest req) override;
 
-        for (auto &result : results)
-        {
-            HotelRoom room(getName(), result.nightlyPrice);
-            rooms.push_back(room);
-        }
-        return rooms;
-    }
-    virtual bool bookRoom(const HotelReservation &reservation) const override
-    {
-        return true;
-    }
+    virtual bool bookRoom(const HotelReservation &reservation) const override;
 };
 
 class HotelManagerFactory
 {
 public:
-    static vector<IHotelManager *> getManagers()
-    {
-        return vector<IHotelManager *>{new NaebaPrinceManager(), new CosmoSantsManager()};
-    }
+    static vector<IHotelManager *> getManagers();
 
-    static IHotelManager *getManager(const string &name)
-    {
-        for (IHotelManager *m : HotelManagerFactory::getManagers())
-        {
-            if (m->getName() == name)
-                return m;
-        }
-        return nullptr;
-    }
+    static IHotelManager *getManager(const string &name);
 };
 
 #endif /** HOTEL_H_ **/
