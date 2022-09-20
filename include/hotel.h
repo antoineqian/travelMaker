@@ -1,50 +1,9 @@
 #ifndef HOTEL_H_
 #define HOTEL_H_
 #include "itinerary.h"
+#include "cosmosants.h"
+#include "naebaprince.h"
 
-class NaebaPrinceRoom
-{
-public:
-    double pricePerNight;
-};
-
-class NaebaPrinceAPI
-{
-public:
-    static vector<NaebaPrinceRoom> getAvailableRooms(int beds)
-    {
-        vector<NaebaPrinceRoom> rooms;
-
-        rooms.push_back({50});
-        rooms.push_back({60});
-        rooms.push_back({130});
-
-        return rooms;
-    }
-};
-
-class CosmoSantsApartment
-{
-public:
-    double nightlyPrice;
-};
-
-class CosmoSantsAPI
-{
-public:
-    static vector<CosmoSantsApartment> findApartments(int persons)
-    {
-        vector<CosmoSantsApartment> apts;
-
-        apts.push_back({55});
-        apts.push_back({65});
-        apts.push_back({135});
-
-        return apts;
-    }
-};
-
-////////
 class HotelRoom
 {
 private:
@@ -115,7 +74,7 @@ public:
         oss << "\t" << request.getFromDate() << " to " << request.getToDate() << " : " << request.getTotalNights() << '\n';
         oss << "\t"
             << "For " << request.getGuests() << " people. \n";
-        oss << "\tTotal Cost:" << totalCost() << '\n';
+        oss << "\tTotal Cost: " << totalCost() << '\n';
 
         return oss.str();
     }

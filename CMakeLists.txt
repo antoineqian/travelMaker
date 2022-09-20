@@ -6,8 +6,10 @@ set(CMAKE_C_FLAGS "-Wall -g")
 
 project(TravelMaker)
 
+add_subdirectory(external)
+
 file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS  src/*.cpp)
 add_executable(TravelMaker ${SRC_FILES})
 target_include_directories(TravelMaker PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-
+target_link_libraries(TravelMaker PUBLIC external)

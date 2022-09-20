@@ -1,71 +1,8 @@
 #ifndef FLIGHT_H_
 #define FLIGHT_H_
 #include "itinerary.h"
-
-class AirJapanFlight
-{
-public:
-    double cost;
-    string date_from;
-    string date_to;
-    string departure_location;
-    string arrival_location;
-};
-
-/**
- * Dummy API that returns flights ignoring input parameters.
- * The point here is that we have to deal with different APIs from airline company to company.
- */
-class AirJapanAPI
-{
-public:
-    static vector<AirJapanFlight> fetchFlights(string from, string from_date, string to, string to_date, int persons)
-    {
-        vector<AirJapanFlight> flights;
-
-        flights.push_back({200, "25-01-2022", "10-02-2022", "Paris", "Tokyo"});
-        flights.push_back({250, "29-01-2022", "10-02-2022", "Paris", "Osaka"});
-        return flights;
-    }
-    static bool reserveFlight(const AirJapanFlight &flight)
-    {
-        return true;
-    }
-};
-
-class AirFranceFlight
-{
-public:
-    double price;
-    string from;
-    string to;
-    string fromDate;
-    string toDate;
-};
-
-/**
- * Dummy API that returns flights ignoring input parameters.
- * The point here is that we have to deal with different APIs from airline company to company.
- */
-class AirFranceAPI
-{
-public:
-    static vector<AirFranceFlight> getAvailableFlights(int nOfSeats, string from, string from_date, string to, string to_date)
-    {
-        vector<AirFranceFlight> flights;
-
-        flights.push_back({200, "Paris", "Tokyo", "25-01-2022", "10-02-2022"});
-        flights.push_back({250, "Paris", "Tokyo", "29-01-2022", "10-02-2022"});
-        return flights;
-    }
-
-    static bool bookFlight(const AirFranceFlight &flight)
-    {
-        return true;
-    }
-};
-
-////////////////////////
+#include "airjapan.h"
+#include "airfrance.h"
 
 class Flight
 {
@@ -126,7 +63,7 @@ public:
         oss << "Airline reservation with " << flight.getAirlineName() << ": From " << request.getFrom() << " on " << request.getDateFrom() << '\n';
         oss << "to " << request.getTo() << " on " << request.getDateTo() << '\n';
         oss << "\tSeats: " << request.getSeats() << '\n';
-        oss << "\tTotal Cost:" << totalCost() << '\n';
+        oss << "\tTotal Cost: " << totalCost() << '\n';
 
         return oss.str();
     }
