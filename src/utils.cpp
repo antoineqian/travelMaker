@@ -1,15 +1,4 @@
-#ifndef UTILS_H_
-#define UTILS_H_
-#include <iostream>
-#include <vector>
-#include <string>
-#include <limits>
-using std::cin;
-using std::cout;
-using std::numeric_limits;
-using std::streamsize;
-using std::string;
-using std::vector;
+#include "utils.h"
 
 int getIntFromUser(int low, int high)
 {
@@ -44,5 +33,3 @@ int getChoiceFromMenu(const vector<string> &choices, string title)
     }
     return getIntFromUser(1, choices.size());
 }
-
-#endif /* UTILS_H_ */

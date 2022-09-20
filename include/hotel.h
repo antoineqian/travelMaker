@@ -1,6 +1,6 @@
 #ifndef HOTEL_H_
 #define HOTEL_H_
-#include "reservation.h"
+#include "itinerary.h"
 
 class NaebaPrinceRoom
 {

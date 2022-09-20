@@ -1,6 +1,6 @@
 #ifndef FLIGHT_H_
 #define FLIGHT_H_
-#include "reservation.h"
+#include "itinerary.h"
 
 class AirJapanFlight
 {
