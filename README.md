@@ -2,8 +2,7 @@
 
 A simple command line application using c++ 20 standards.
 
-To use it, run main.cpp, for example :
+# Notes
 
-```
-g++ -o main main.cpp --std=c++20 && ./main
-```
+- Database is not persistent and will reset after each launch.
+- A user "antoineqian" with password "222" is stored by default.

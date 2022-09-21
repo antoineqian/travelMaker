@@ -48,7 +48,7 @@ void Session::signUp()
     loadDatabase();
     while (true)
     {
-        cout << "Please enter your username and password: \n";
+        cout << "Please enter your username and password separated by space: \n";
         string username, password;
         cin >> username >> password;
 
